@@ -1,0 +1,42 @@
+{
+  "project_name": "arc-halo-cognitive-fusion",
+  "database": {
+    "name": "arc_halo_db",
+    "region": "aws-us-east-2",
+    "compute_units": {
+      "min": 0.25,
+      "max": 4
+    },
+    "autoscaling": {
+      "enabled": true,
+      "scale_down_timeout": "5m"
+    }
+  },
+  "extensions": [
+    "vector",
+    "uuid-ossp",
+    "pg_stat_statements"
+  ],
+  "pooling": {
+    "enabled": true,
+    "mode": "transaction",
+    "max_client_conn": 100
+  },
+  "branching": {
+    "enabled": true,
+    "branches": {
+      "main": "production",
+      "dev": "development",
+      "staging": "pre-production"
+    }
+  },
+  "backup": {
+    "point_in_time_recovery": true,
+    "retention_days": 30
+  },
+  "monitoring": {
+    "log_queries": true,
+    "log_duration": true,
+    "track_io_timing": true
+  }
+}
