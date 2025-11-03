@@ -24,6 +24,10 @@ on:
           - staging
           - production
 
+# Restrict default permissions for security
+permissions:
+  contents: read
+
 env:
   POSTGRES_VERSION: 15
 
@@ -31,6 +35,8 @@ jobs:
   validate-schema:
     name: Validate SQL Schema
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     
     steps:
       - name: Checkout repository
@@ -79,6 +85,8 @@ jobs:
     name: Test Schema with Local PostgreSQL
     runs-on: ubuntu-latest
     needs: validate-schema
+    permissions:
+      contents: read
     
     services:
       postgres:
@@ -190,6 +198,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: [validate-schema, test-schema]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    permissions:
+      contents: read
     environment: 
       name: ${{ github.event.inputs.environment || 'development' }}
     
@@ -275,6 +285,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: deploy-to-neon
     if: always()
+    permissions:
+      contents: read
     
     steps:
       - name: Deployment Success
