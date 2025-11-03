@@ -90,8 +90,16 @@ echo -e "${GREEN}Step 4: Verifying deployment...${NC}"
 table_count=$(psql "$NEON_DATABASE_URL" -tAc "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='public' AND table_type='BASE TABLE';")
 echo "Found $table_count tables in the database"
 
-if [ "$table_count" -lt "15" ]; then
-    echo -e "${YELLOW}Warning: Expected at least 15 tables, found $table_count${NC}"
+# Expected minimum tables: models, transformer_layers, attention_heads, 
+# tensor_metadata, tensor_data, model_weights, embeddings, training_sessions, 
+# training_metrics, optimizer_state, model_checkpoints, gradient_checkpoints,
+# inference_sessions, activation_cache, kv_cache, inference_metrics, 
+# attention_patterns, cognitive_fusion_reactors, reactor_models, 
+# fusion_operations, model_interaction_graph, cognitive_state, reactor_metrics
+EXPECTED_MIN_TABLES=20
+
+if [ "$table_count" -lt "$EXPECTED_MIN_TABLES" ]; then
+    echo -e "${YELLOW}Warning: Expected at least $EXPECTED_MIN_TABLES tables, found $table_count${NC}"
 else
     echo -e "${GREEN}✓ Database schema verified successfully${NC}"
 fi

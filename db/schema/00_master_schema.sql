@@ -9,20 +9,22 @@ SET client_encoding = 'UTF8';
 SET timezone = 'UTC';
 
 -- Execute all schema files in order
+-- Note: These paths are relative to where psql is executed
+-- For manual execution, adjust paths as needed based on your working directory
 \echo 'Creating core tables...'
-\i /db/schema/01_core_tables.sql
+\i db/schema/01_core_tables.sql
 
 \echo 'Creating tensor storage schema...'
-\i /db/schema/02_tensor_storage.sql
+\i db/schema/02_tensor_storage.sql
 
 \echo 'Creating training state schema...'
-\i /db/schema/03_training_state.sql
+\i db/schema/03_training_state.sql
 
 \echo 'Creating inference and cache schema...'
-\i /db/schema/04_inference_cache.sql
+\i db/schema/04_inference_cache.sql
 
 \echo 'Creating cognitive fusion schema...'
-\i /db/schema/05_cognitive_fusion.sql
+\i db/schema/05_cognitive_fusion.sql
 
 -- Add foreign key constraints that span multiple schema files
 \echo 'Adding cross-schema foreign keys...'

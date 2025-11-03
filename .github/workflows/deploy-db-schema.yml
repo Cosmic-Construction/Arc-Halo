@@ -242,11 +242,12 @@ jobs:
           echo "Verifying deployment..."
           
           # Count tables
+          EXPECTED_MIN_TABLES=20
           table_count=$(psql "$NEON_DATABASE_URL" -tAc "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='public' AND table_type='BASE TABLE';")
           echo "Found $table_count tables in the database"
           
-          if [ "$table_count" -lt "15" ]; then
-            echo "Warning: Expected at least 15 tables, found $table_count"
+          if [ "$table_count" -lt "$EXPECTED_MIN_TABLES" ]; then
+            echo "Warning: Expected at least $EXPECTED_MIN_TABLES tables, found $table_count"
           else
             echo "✓ Database schema deployed successfully with $table_count tables"
           fi

@@ -235,7 +235,18 @@ def main():
         sys.exit(1)
     
     # Mask password in display
-    display_url = connection_string.split('@')[0].split(':')[0] + ":****@" + connection_string.split('@')[1]
+    try:
+        # Try to parse and mask the URL safely
+        if '@' in connection_string:
+            parts = connection_string.split('@')
+            user_part = parts[0].split(':')[0]
+            host_part = parts[1] if len(parts) > 1 else "unknown-host"
+            display_url = f"{user_part}:****@{host_part}"
+        else:
+            display_url = "****"
+    except Exception:
+        display_url = "****"
+    
     print(f"Database URL: {display_url}")
     
     # Run tests
