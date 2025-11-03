@@ -42,10 +42,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       
+      - name: Add PostgreSQL APT repository (for postgresql-client-15)
+        run: |
+          wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo gpg --dearmor -o /usr/share/keyrings/postgresql-archive-keyring.gpg
+          echo "deb [signed-by=/usr/share/keyrings/postgresql-archive-keyring.gpg] http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
+          sudo apt-get update
+      
       - name: Install PostgreSQL client
         run: |
-          sudo apt-get update
-          sudo apt-get install -y postgresql-client-${{ env.POSTGRES_VERSION }}
+          sudo apt-get install -y postgresql-client-${{ env.POSTGRES_VERSION }} || sudo apt-get install -y postgresql-client
       
       - name: Validate SQL syntax
         run: |
@@ -107,10 +112,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       
+      - name: Add PostgreSQL APT repository (for postgresql-client-15)
+        run: |
+          wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo gpg --dearmor -o /usr/share/keyrings/postgresql-archive-keyring.gpg
+          echo "deb [signed-by=/usr/share/keyrings/postgresql-archive-keyring.gpg] http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
+          sudo apt-get update
+      
       - name: Install PostgreSQL client
         run: |
-          sudo apt-get update
-          sudo apt-get install -y postgresql-client-${{ env.POSTGRES_VERSION }}
+          sudo apt-get install -y postgresql-client-${{ env.POSTGRES_VERSION }} || sudo apt-get install -y postgresql-client
       
       - name: Install required extensions
         env:
@@ -207,10 +217,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       
+      - name: Add PostgreSQL APT repository (for postgresql-client-15)
+        run: |
+          wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo gpg --dearmor -o /usr/share/keyrings/postgresql-archive-keyring.gpg
+          echo "deb [signed-by=/usr/share/keyrings/postgresql-archive-keyring.gpg] http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
+          sudo apt-get update
+      
       - name: Install PostgreSQL client
         run: |
-          sudo apt-get update
-          sudo apt-get install -y postgresql-client-${{ env.POSTGRES_VERSION }}
+          sudo apt-get install -y postgresql-client-${{ env.POSTGRES_VERSION }} || sudo apt-get install -y postgresql-client
       
       - name: Deploy schema to Neon
         env:
